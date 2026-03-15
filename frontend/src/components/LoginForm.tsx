@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Lock } from 'lucide-react';
+import { Newspaper } from 'lucide-react';
 import { motion } from 'motion/react';
 
 interface LoginFormProps {
@@ -23,8 +23,8 @@ export function LoginForm({ onLogin, error }: LoginFormProps) {
         className="bg-white p-8 rounded-2xl shadow-sm border border-border max-w-md w-full"
       >
         <div className="flex justify-center mb-6">
-          <div className="w-12 h-12 bg-bg-secondary rounded-full flex items-center justify-center">
-            <Lock className="w-6 h-6 text-text-secondary" />
+          <div className="w-14 h-14 bg-bg-secondary rounded-full flex items-center justify-center">
+            <Newspaper className="w-8 h-8 text-text-secondary" />
           </div>
         </div>
         <h1 className="text-4xl font-serif text-center mb-2">AI Media Clipping</h1>

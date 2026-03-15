@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Download, ExternalLink, Link as LinkIcon } from 'lucide-react';
+import { Newspaper, InfoIcon, ExternalLink as LinkIcon } from 'lucide-react';
 import { Article } from '../types';
 
 interface MediaGroupProps {
@@ -46,28 +46,28 @@ export const MediaGroup: React.FC<MediaGroupProps> = ({ medij, articles, mainTab
                 <div className="flex gap-2 flex-shrink-0">
                   <button 
                     onClick={() => handleDownload(article.id)}
-                    className="p-2 bg-bg-secondary hover:bg-border text-text-secondary rounded-lg transition-colors"
+                    className="p-2 bg-bg-secondary hover:bg-border text-text-secondary rounded-lg transition-colors cursor-pointer"
                     title="Prenesi PDF"
                   >
-                    <Download className="w-4 h-4" />
+                    <Newspaper className="w-4 h-4" />
                   </button>
                   {article.url && (
                     <a 
                       href={article.url} 
                       target="_blank" 
                       rel="noopener noreferrer"
-                      className="p-2 bg-bg-secondary hover:bg-border text-text-secondary rounded-lg transition-colors"
+                      className="p-2 bg-bg-secondary hover:bg-border text-text-secondary rounded-lg transition-colors cursor-pointer"
                       title="Odpri povezavo"
                     >
                       <LinkIcon className="w-4 h-4" />
                     </a>
                   )}
                   <button 
-                    onClick={() => navigate(`/article/${article.id}`)}
-                    className="p-2 bg-text-primary hover:bg-text-primary/90 text-white rounded-lg transition-colors"
+                    onClick={() => navigate(`/article/${date}/${article.id}`)}
+                    className="p-2 bg-text-primary hover:bg-text-primary/90 text-white rounded-lg transition-colors cursor-pointer"
                     title="Prikaži podrobnosti"
                   >
-                    <ExternalLink className="w-4 h-4" />
+                    <InfoIcon className="w-4 h-4" />
                   </button>
                 </div>
               </div>

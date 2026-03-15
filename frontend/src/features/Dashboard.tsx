@@ -118,6 +118,8 @@ export const Dashboard: React.FC<DashboardProps> = () => {
   const regularMedia = Object.keys(articlesByMedia).filter(m => !isAggregator(m));
   const aggregatorMedia = Object.keys(articlesByMedia).filter(m => isAggregator(m));
 
+  const date = data.date; 
+
   return (
     <div className="min-h-screen bg-bg-primary text-text-primary pb-24 relative">
       {/* Loading Overlay for date changes */}
@@ -225,7 +227,7 @@ export const Dashboard: React.FC<DashboardProps> = () => {
                 className="space-y-6"
               >
                 {data.themes[mainTab]?.map((theme, idx) => (
-                  <ThemeCard key={idx} theme={theme} />
+                  <ThemeCard key={idx} theme={theme} date={date} />
                 ))}
                 {(!data.themes[mainTab] || data.themes[mainTab]?.length === 0) && (
                   <div className="text-center text-text-secondary py-12 bg-white rounded-2xl border border-border">

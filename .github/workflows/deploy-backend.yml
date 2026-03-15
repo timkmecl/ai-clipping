@@ -1,0 +1,79 @@
+name: Deploy Backend to Raspberry Pi
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+
+jobs:
+  build-backend:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
+
+      # Required for cross-platform builds
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+      
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+          
+      - name: Build and Push
+        uses: docker/build-push-action@v5
+        with:
+          context: ./backend
+          push: true
+          # We build for both standard PC and Raspberry Pi 3B+
+          platforms: linux/amd64,linux/arm/v7
+          tags: |
+            ghcr.io/${{ github.repository_owner }}/ai-clipping-backend:latest
+            ghcr.io/${{ github.repository_owner }}/ai-clipping-backend:${{ github.ref_name }}
+
+  deploy-pi:
+    needs: build-backend
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4 # Get the files from the repo
+
+      - name: Copy docker-compose.yml to Pi
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.DOT_PI_IP }}
+          username: ${{ secrets.DOT_PI_USER }}
+          key: ${{ secrets.DOT_PI_KEY }}
+          port: ${{ secrets.DOT_PI_PORT }}
+          source: "docker-compose.yml"
+          target: "~/apps/ai-clipping/"
+
+      - name: SSH and Update
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.DOT_PI_IP }}
+          username: ${{ secrets.DOT_PI_USER }}
+          key: ${{ secrets.DOT_PI_KEY }}
+          port: ${{ secrets.DOT_PI_PORT }}
+          # We pass the image name as an env var to the shell
+          envs: GITHUB_REPOSITORY_OWNER
+          script: |
+            cd ~/apps/ai-clipping
+            # Log in
+            echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+            
+            # Set the image name variable for docker-compose to use
+            export IMAGE_NAME=$(echo "${{ github.repository }}" | tr '[:upper:]' '[:lower:]')
+            
+            docker compose pull
+            docker compose up -d
+            docker image prune -f

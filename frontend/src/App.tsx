@@ -17,7 +17,7 @@ function AppContent() {
     <ClippingProvider>
       <Routes>
         <Route path="/" element={<Dashboard />} />
-        <Route path="/article/:id" element={<ArticleDetails />} />
+        <Route path="/article/:date/:id" element={<ArticleDetails />} />
       </Routes>
     </ClippingProvider>
   );

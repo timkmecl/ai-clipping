@@ -1,18 +1,18 @@
 import React, { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { ArrowLeft, Download, ExternalLink, Link as LinkIcon } from 'lucide-react';
+import { ArrowLeft, Newspaper, ExternalLink as LinkIcon } from 'lucide-react';
 import { motion } from 'motion/react';
 import { Article } from '../types';
 import { useClipping } from '../context/ClippingContext';
 
 export const ArticleDetails: React.FC = () => {
-  const { id } = useParams<{ id: string }>();
+  const { id, date } = useParams<{ id: string, date: string }>();
   const navigate = useNavigate();
   const { data, loading, loadData } = useClipping();
 
   useEffect(() => {
     if (!data) {
-      loadData();
+      loadData(date);
     }
   }, [data, loadData]);
   
@@ -95,29 +95,29 @@ export const ArticleDetails: React.FC = () => {
               <div className="order-1 md:order-2 flex gap-2 flex-shrink-0 self-end md:self-start">
                 <button 
                   onClick={handleDownload}
-                  className="p-3 bg-bg-secondary hover:bg-border text-text-secondary rounded-xl transition-colors"
+                  className="p-3 bg-bg-secondary hover:bg-border text-text-secondary rounded-xl transition-colors cursor-pointer"
                   title="Prenesi PDF"
                 >
-                  <Download className="w-5 h-5" />
+                  <Newspaper className="w-5 h-5" />
                 </button>
                 {article.url && (
                   <a 
                     href={article.url} 
                     target="_blank" 
                     rel="noopener noreferrer"
-                    className="p-3 bg-bg-secondary hover:bg-border text-text-secondary rounded-xl transition-colors"
+                    className="p-3 bg-bg-secondary hover:bg-border text-text-secondary rounded-xl transition-colors cursor-pointer"
                     title="Odpri povezavo"
                   >
                     <LinkIcon className="w-5 h-5" />
                   </a>
                 )}
-                <button 
+                {/* <button 
                   disabled
                   className="p-3 bg-text-primary/50 text-white rounded-xl cursor-default"
                   title="Prikaži podrobnosti (Trenutni pogled)"
                 >
                   <ExternalLink className="w-5 h-5" />
-                </button>
+                </button> */}
               </div>
             </div>
 

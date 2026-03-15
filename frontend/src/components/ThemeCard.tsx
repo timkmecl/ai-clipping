@@ -4,9 +4,10 @@ import { ThemeItem } from '../types';
 
 interface ThemeCardProps {
   theme: ThemeItem;
+  date: string;
 }
 
-export const ThemeCard: React.FC<ThemeCardProps> = ({ theme }) => {
+export const ThemeCard: React.FC<ThemeCardProps> = ({ theme, date }) => {
   return (
     <div className="bg-white rounded-2xl p-6 md:p-8 border border-border shadow-sm">
       <div className="flex flex-col md:flex-row gap-8">
@@ -16,7 +17,7 @@ export const ThemeCard: React.FC<ThemeCardProps> = ({ theme }) => {
             {theme.mediji.map((m, i) => (
               <Link 
                 key={m + i} 
-                to={`/article/${theme.ids[i]}`}
+                to={`/article/${date}/${theme.ids[i]}`}
                 className="text-xs font-medium px-2.5 py-1 bg-bg-secondary text-text-secondary hover:text-text-primary hover:bg-border rounded-md border border-border transition-colors"
               >
                 {m}
