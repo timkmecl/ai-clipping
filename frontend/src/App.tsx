@@ -7,10 +7,10 @@ import { AuthProvider, useAuth } from './context/AuthContext';
 import { ClippingProvider } from './context/ClippingContext';
 
 function AppContent() {
-  const { isAuthenticated, error, login } = useAuth();
+  const { isAuthenticated, isLoading, error, login } = useAuth();
 
   if (!isAuthenticated) {
-    return <LoginForm onLogin={login} error={error} />;
+    return <LoginForm onLogin={login} error={error} isLoading={isLoading} />;
   }
 
   return (

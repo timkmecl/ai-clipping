@@ -71,10 +71,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       .then(() => {
         setIsAuthenticated(false);
         setUser(null);
+        setIsLoading(false);
+        setError('');
       })
       .catch(() => {
         setIsAuthenticated(false);
         setUser(null);
+        setIsLoading(false);
+        setError('');
       });
   }, []);
 
