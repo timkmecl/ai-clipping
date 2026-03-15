@@ -6,7 +6,7 @@ import {defineConfig, loadEnv} from 'vite';
 export default defineConfig(({mode}) => {
   const env = loadEnv(mode, '.', '');
   return {
-    base: '/ai-clipping-demo/', // Set to your repo name
+    base: '/ai-clipping/', // Set to your repo name
     plugins: [react(), tailwindcss()],
       define: {
         'process.env.API_URL': JSON.stringify(env.API_URL || 'http://localhost:4102/api')
