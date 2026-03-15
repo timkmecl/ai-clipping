@@ -195,6 +195,10 @@ export const ArticleDetails: React.FC = () => {
             </div>
           )}
         </motion.article>
+        <p className="text-center text-xs text-gray-400 font-light mt-8 tracking-widest uppercase">
+          Built by{' '}
+          <a href="https://kmecl.eu" target="_blank" rel="noopener noreferrer" className="underline hover:text-[#BC5A41]">Tim Kmecl</a> 2026
+        </p>
       </main>
     </div>
   );

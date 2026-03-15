@@ -16,7 +16,7 @@ export function LoginForm({ onLogin, error }: LoginFormProps) {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-bg-primary p-4">
+    <div className="min-h-screen flex flex-col items-center justify-center bg-bg-primary p-4">
       <motion.div 
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -48,6 +48,14 @@ export function LoginForm({ onLogin, error }: LoginFormProps) {
             Vstopi
           </button>
         </form>
+      </motion.div>
+      <motion.div 
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="text-center text-xs text-gray-400 font-light mt-8 tracking-widest uppercase"
+      >
+        Built by{' '}
+        <a href="https://kmecl.eu" target="_blank" rel="noopener noreferrer" className="underline hover:text-[#BC5A41]">Tim Kmecl</a> 2026
       </motion.div>
     </div>
   );

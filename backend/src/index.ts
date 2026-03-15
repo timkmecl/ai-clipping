@@ -37,12 +37,12 @@ const JWT_SECRET = process.env.JWT_SECRET!;
 // Auth Middleware
 const authenticate = (req: Request, res: Response, next: NextFunction) => {
   const token = req.cookies.auth_token;
-  console.log("Authenticating request with token:", token);
+  console.log("Authenticating request with token");
   if (!token) return res.status(401).json({ error: 'Unauthorized' });
 
   try {
     jwt.verify(token, JWT_SECRET);
-    console.log("Authentication successful for token:", token);
+    console.log("Authentication successful");
     next();
   } catch (err) {
     console.log("Authentication failed for token:", token, "Error:", err);
@@ -69,7 +69,7 @@ app.post('/api/login', async (req: Request, res: Response) => {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
-      maxAge: 7 * 24 * 60 * 60 * 1000,
+      maxAge: 365 * 24 * 60 * 60 * 1000,
     });
 
     console.log(process.env.NODE_ENV === 'production' ? "Production login successful" : "Development login successful");
@@ -109,7 +109,7 @@ app.post('/api/logout', (req: Request, res: Response) => {
 
 
 // 4. Download Article PDF
-app.get('/api/download/:date/:id', (req: Request, res: Response) => {
+app.get('/api/download/:date/:id', authenticate, (req: Request, res: Response) => {
   let { date, id } = req.params;
   // Ensure date and id are strings (in case they are string[])
   if (Array.isArray(date)) date = date[0];
@@ -123,6 +123,7 @@ app.get('/api/download/:date/:id', (req: Request, res: Response) => {
 
   // 2. Check if the file exists before trying to send it
   if (!fs.existsSync(filePath)) {
+    console.error(`File not found: ${filePath}`);
     return res.status(404).json({ message: 'File not found' });
   }
 
@@ -134,6 +135,7 @@ app.get('/api/download/:date/:id', (req: Request, res: Response) => {
     }
   };
 
+
   // 4. Send the file
   res.sendFile(filePath, options, (err) => {
     if (err) {
@@ -143,8 +145,40 @@ app.get('/api/download/:date/:id', (req: Request, res: Response) => {
   });
 });
 
-app.listen(3000, () => console.log('Server running on port 3000'));
 
+// 5 Get dates + analysis (optional date), returns dates + analysis for that date
+app.post('/api/data', authenticate, (req: Request, res: Response) => {
+  const { date } = req.body as { date?: string };
+
+  console.log("Received request for data with date:", date);
+
+  const datesPath = path.join(DATA_DIR, 'dates.json');
+  if (!fs.existsSync(datesPath)) {
+    console.error(`dates.json not found at path: ${datesPath}`);
+    return res.status(500).json({ error: 'dates.json not found' });
+  }
+
+  const datesRaw = fs.readFileSync(datesPath, 'utf-8');
+  const dates = JSON.parse(datesRaw);
+
+  const chosenDate = date || (dates.length > 0 ? dates[dates.length - 1].id : undefined);
+  if (!chosenDate) {
+    console.error("No dates available in dates.json");
+    return res.status(400).json({ error: 'No date available' });
+  }
+
+  const analysisPath = path.join(DATA_DIR, chosenDate, 'analysis.json');
+  if (!fs.existsSync(analysisPath)) {
+    console.error(`analysis.json not found for date ${chosenDate} at path: ${analysisPath}`);
+    return res.status(404).json({ error: 'analysis.json not found for date' });
+  }
+
+  const analysisRaw = fs.readFileSync(analysisPath, 'utf-8');
+
+  console.log(`Successfully read data for date: ${chosenDate}. Sending response.`);
+
+  res.json({ dates, analysis: analysisRaw });
+});
 
 
 const PORT = process.env.PORT || 4102;

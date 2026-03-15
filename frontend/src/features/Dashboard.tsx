@@ -271,6 +271,10 @@ export const Dashboard: React.FC<DashboardProps> = () => {
               </motion.div>
             )}
           </AnimatePresence>
+          <p className="text-center text-xs text-gray-400 font-light mt-3 tracking-widest uppercase">
+            Built by{' '}
+            <a href="https://kmecl.eu" target="_blank" rel="noopener noreferrer" className="underline hover:text-[#BC5A41]">Tim Kmecl</a> 2026
+          </p>
         </div>
       </main>
     </div>
