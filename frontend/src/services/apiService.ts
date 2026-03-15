@@ -1,5 +1,5 @@
 import { ClippingData } from '../types';
-import { summaryData, articlesData, themesData, analysis } from '../mockData';
+import { analysis, dates } from '../mockData';
 
 export class ApiService {
   /**
@@ -25,9 +25,25 @@ export class ApiService {
     // } else if (current === "19. 11. 2025") {
     //   next = null;
     // }
-    const current = "14. 11. 2025";
-    const prev = null;
-    const next = null;
+
+    // const current = "14. 11. 2025";
+    // const prev = null;
+    // const next = null;
+
+    const datesParsed = JSON.parse(dates);
+
+    // // last item in dates is the most recent one
+    // const current = date || datesParsed[datesParsed.length - 1].date;
+    // const currentIndex = datesParsed.findIndex((d: { date: string }) => d.date === current);
+    // const prev = currentIndex > 0 ? datesParsed[currentIndex - 1].date : null;
+    // const next = currentIndex < datesParsed.length - 1 ? datesParsed[currentIndex + 1].date : null;
+
+    const currentId = date || datesParsed[datesParsed.length - 1].id;
+    const currentIndex = datesParsed.findIndex((d: { id: string }) => d.id === currentId);
+    const currentDate = datesParsed[currentIndex];
+    const prev = currentDate.prev;
+    const next = currentDate.next;
+    const displayDate = currentDate.date;
 
     const data = JSON.parse(analysis);
     const summary = data.summary;
@@ -38,7 +54,8 @@ export class ApiService {
 
 
     return {
-      date: current,
+      date: currentId,
+      displayDate: displayDate,
       prevDate: prev,
       nextDate: next,
       summary: summary,

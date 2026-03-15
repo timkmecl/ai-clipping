@@ -7,16 +7,15 @@ interface MediaGroupProps {
   medij: string;
   articles: Article[];
   mainTab: 'splosno' | 'nasprotniki' | 'podporniki';
+  date: string;
 }
 
-export const MediaGroup: React.FC<MediaGroupProps> = ({ medij, articles, mainTab }) => {
+export const MediaGroup: React.FC<MediaGroupProps> = ({ medij, articles, mainTab, date }) => {
   const navigate = useNavigate();
 
   const handleDownload = (id: string) => {
-    const a = document.createElement('a');
-    a.href = `data:text/plain;charset=utf-8,Mock PDF content for article ${id}`;
-    a.download = `${id}.pdf`;
-    a.click();
+    const url = `${process.env.API_URL}/download/${date}/${id}`;
+    window.open(url, '_blank', 'noopener,noreferrer');
   };
 
   const shortenTag = (oz: string) => (oz === "ZAKON O POMOČI PRI PROSTOVOLJNEM KONČANJU ŽIVLJENJA") ? "ZPPKŽ" : oz;

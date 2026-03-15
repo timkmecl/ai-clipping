@@ -45,6 +45,7 @@ export interface Summary {
 
 export interface ClippingData {
   date: string;
+  displayDate: string;
   prevDate: string | null;
   nextDate: string | null;
   summary: Summary;

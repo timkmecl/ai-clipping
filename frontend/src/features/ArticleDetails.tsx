@@ -8,7 +8,14 @@ import { useClipping } from '../context/ClippingContext';
 export const ArticleDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const { data } = useClipping();
+  const { data, loading, loadData } = useClipping();
+
+  useEffect(() => {
+    if (!data) {
+      loadData();
+    }
+  }, [data, loadData]);
+  
   
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -17,12 +24,20 @@ export const ArticleDetails: React.FC = () => {
   const article = data?.articles.find(a => a.id === id);
 
   const handleDownload = () => {
-    if (!article) return;
-    const a = document.createElement('a');
-    a.href = `data:text/plain;charset=utf-8,Mock PDF content for article ${article.id}`;
-    a.download = `${article.id}.pdf`;
-    a.click();
+    const url = `${process.env.API_URL}/download/${data.date}/${article.id}`;
+    window.open(url, '_blank', 'noopener,noreferrer');
   };
+
+  if (loading && !data) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-bg-primary">
+        <div className="flex flex-col items-center gap-4">
+          <div className="w-12 h-12 border-4 border-text-primary border-t-transparent rounded-full animate-spin"></div>
+          <div className="text-text-secondary font-medium">Nalaganje podatkov...</div>
+        </div>
+      </div>
+    );
+  }
 
   if (!article) {
     return (

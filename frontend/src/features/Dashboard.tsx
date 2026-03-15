@@ -137,7 +137,7 @@ export const Dashboard: React.FC<DashboardProps> = () => {
         )}
       </AnimatePresence>
 
-      <Header currentDate={data.date} />
+      <Header currentDate={data.displayDate} />
 
       <main className="max-w-5xl mx-auto px-6 py-12 space-y-12">
         
@@ -180,7 +180,7 @@ export const Dashboard: React.FC<DashboardProps> = () => {
         {/* Summary Section */}
         <SummarySection 
           mainTab={mainTab} 
-          currentDate={data.date} 
+          currentDate={data.displayDate} 
           onPrevDay={handlePrevDay} 
           onNextDay={handleNextDay} 
           summary={data.summary}
@@ -244,7 +244,7 @@ export const Dashboard: React.FC<DashboardProps> = () => {
                 {/* Regular Media */}
                 <div className="space-y-8">
                   {regularMedia.map(medij => (
-                    <MediaGroup key={medij} medij={medij} articles={articlesByMedia[medij]} mainTab={mainTab} />
+                    <MediaGroup key={medij} medij={medij} articles={articlesByMedia[medij]} mainTab={mainTab} date={data.date} />
                   ))}
                 </div>
 

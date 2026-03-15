@@ -56,8 +56,6 @@ def update_dates_json(new_id, formatted_date):
 
 def run_daily_task():
     today = datetime.date.today()
-    # 260313
-    today = datetime.date(2026, 3, 11)
     dir_name = today.strftime('%y%m%d')        # e.g., 250310
     display_date = today.strftime('%d. %m. %Y') # e.g., 10. 03. 2026
     
