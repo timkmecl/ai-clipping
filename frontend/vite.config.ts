@@ -8,9 +8,9 @@ export default defineConfig(({mode}) => {
   return {
     base: '/ai-clipping-demo/', // Set to your repo name
     plugins: [react(), tailwindcss()],
-    define: {
-      'process.env.GEMINI_API_KEY': JSON.stringify(env.GEMINI_API_KEY),
-    },
+      define: {
+        'process.env.API_URL': JSON.stringify(env.API_URL || 'http://localhost:4102/api')
+      },
     resolve: {
       alias: {
         '@': path.resolve(__dirname, '.'),
