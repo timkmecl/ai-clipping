@@ -1,6 +1,10 @@
-# AI Clipping
+# AI Media Clipping
+
+![React](https://img.shields.io/badge/React-19-61DAFB?style=flat&logo=react&logoColor=white) ![TypeScript](https://img.shields.io/badge/TypeScript-5.8-3178C6?style=flat&logo=typescript&logoColor=white) ![Vite](https://img.shields.io/badge/Vite-6-646CFF?style=flat&logo=vite&logoColor=white) ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=flat&logo=tailwind-css&logoColor=white) ![Google Gemini](https://img.shields.io/badge/Google_Gemini-4285F4?style=flat&logo=googlegemini&logoColor=white) ![Express](https://img.shields.io/badge/Express-000000?style=flat&logo=express&logoColor=white)
 
 AI-powered media monitoring and analysis tool that processes daily news PDFs, extracts article metadata using Google Gemini AI and summarizes the articles, and presents structured analysis of media coverage in a web interface.
+
+![AI Clipping Demo](/.github/assets/screenshot.png)
 
 ## Project Structure
 
